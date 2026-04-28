@@ -30,3 +30,110 @@ export async function hydraAdminFetch<T = unknown>(
 	}
 	return (await res.json()) as T;
 }
+
+export type LoginRequest = {
+	challenge: string;
+	subject: string;
+	skip: boolean;
+	client: {
+		client_id: string;
+		client_name?: string;
+	};
+	request_url: string;
+	requested_scope?: string[];
+	requested_access_token_audience?: string[];
+};
+
+export type AcceptLoginBody = {
+	subject: string;
+	remember?: boolean;
+	remember_for?: number;
+	acr?: string;
+	context?: Record<string, unknown>;
+};
+
+export type RedirectResponse = {
+	redirect_to: string;
+};
+
+export type ConsentRequest = {
+	challenge: string;
+	skip: boolean;
+	subject: string;
+	client: {
+		client_id: string;
+		client_name?: string;
+	};
+	requested_scope?: string[];
+	requested_access_token_audience?: string[];
+};
+
+export type AcceptConsentBody = {
+	grant_scope: string[];
+	grant_access_token_audience?: string[];
+	remember?: boolean;
+	remember_for?: number;
+	session?: {
+		access_token?: Record<string, unknown>;
+		id_token?: Record<string, unknown>;
+	};
+};
+
+export type LogoutRequest = {
+	challenge: string;
+	subject?: string;
+	sid?: string;
+	rp_initiated?: boolean;
+	client?: {
+		client_id: string;
+		client_name?: string;
+	};
+	request_url?: string;
+};
+
+export const hydraAdmin = {
+	getLoginRequest(challenge: string) {
+		const qs = new URLSearchParams({ login_challenge: challenge });
+		return hydraAdminFetch<LoginRequest>(
+			`/admin/oauth2/auth/requests/login?${qs}`,
+		);
+	},
+
+	acceptLoginRequest(challenge: string, body: AcceptLoginBody) {
+		const qs = new URLSearchParams({ login_challenge: challenge });
+		return hydraAdminFetch<RedirectResponse>(
+			`/admin/oauth2/auth/requests/login/accept?${qs}`,
+			{ method: "PUT", body: JSON.stringify(body) },
+		);
+	},
+
+	getConsentRequest(challenge: string) {
+		const qs = new URLSearchParams({ consent_challenge: challenge });
+		return hydraAdminFetch<ConsentRequest>(
+			`/admin/oauth2/auth/requests/consent?${qs}`,
+		);
+	},
+
+	acceptConsentRequest(challenge: string, body: AcceptConsentBody) {
+		const qs = new URLSearchParams({ consent_challenge: challenge });
+		return hydraAdminFetch<RedirectResponse>(
+			`/admin/oauth2/auth/requests/consent/accept?${qs}`,
+			{ method: "PUT", body: JSON.stringify(body) },
+		);
+	},
+
+	getLogoutRequest(challenge: string) {
+		const qs = new URLSearchParams({ logout_challenge: challenge });
+		return hydraAdminFetch<LogoutRequest>(
+			`/admin/oauth2/auth/requests/logout?${qs}`,
+		);
+	},
+
+	acceptLogoutRequest(challenge: string) {
+		const qs = new URLSearchParams({ logout_challenge: challenge });
+		return hydraAdminFetch<RedirectResponse>(
+			`/admin/oauth2/auth/requests/logout/accept?${qs}`,
+			{ method: "PUT" },
+		);
+	},
+};
