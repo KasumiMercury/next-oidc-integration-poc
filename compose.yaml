@@ -1,0 +1,61 @@
+services:
+    hydra-migrate:
+        image: oryd/hydra:v26.2.0
+        user: "${UID:-1000}:${GID:-1000}"
+        environment:
+            DSN: sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+        volumes:
+            - ./data/hydra:/var/lib/sqlite
+        command: migrate sql up -e --yes
+        restart: "no"
+
+    hydra:
+        image: oryd/hydra:v26.2.0
+        user: "${UID:-1000}:${GID:-1000}"
+        depends_on:
+            hydra-migrate:
+                condition: service_completed_successfully
+        ports:
+            - "4444:4444"
+            - "4445:4445"
+        environment:
+            DSN: sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+            URLS_SELF_ISSUER: http://localhost:4444
+            URLS_CONSENT: http://localhost:3000/consent
+            URLS_LOGIN: http://localhost:3000/login
+            URLS_LOGOUT: http://localhost:3000/logout
+            SECRETS_SYSTEM: this-is-a-development-only-secret-please-replace-it
+            OIDC_SUBJECT_IDENTIFIERS_SUPPORTED_TYPES: public,pairwise
+            OIDC_SUBJECT_IDENTIFIERS_PAIRWISE_SALT: development-only-pairwise-salt
+            LOG_LEVEL: debug
+            LOG_LEAK_SENSITIVE_VALUES: "true"
+            SERVE_COOKIES_SAME_SITE_MODE: Lax
+        volumes:
+            - ./data/hydra:/var/lib/sqlite
+        command: serve all --dev
+        restart: unless-stopped
+
+    front:
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        environment:
+            NODE_ENV: development
+            HYDRA_PUBLIC_URL: http://hydra:4444
+            HYDRA_ADMIN_URL: http://hydra:4445
+        develop:
+            watch:
+                - action: sync
+                  path: ./front
+                  target: /app
+                  ignore:
+                      - node_modules/
+                      - .next/
+                      - .git/
+                - action: rebuild
+                  path: ./front/package.json
+                - action: rebuild
+                  path: ./front/pnpm-lock.yaml
+        restart: unless-stopped
