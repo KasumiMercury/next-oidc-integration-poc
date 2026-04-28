@@ -10,13 +10,18 @@
 		"format": "biome format --write"
 	},
 	"dependencies": {
+		"better-auth": "^1.6.9",
+		"better-sqlite3": "^12.9.0",
 		"next": "16.2.4",
 		"react": "19.2.4",
+		"react-aria-components": "^1.17.0",
 		"react-dom": "19.2.4"
 	},
 	"devDependencies": {
+		"@better-auth/cli": "^1.4.21",
 		"@biomejs/biome": "2.2.0",
 		"@tailwindcss/postcss": "^4.2.4",
+		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^20.19.39",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",

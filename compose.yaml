@@ -44,7 +44,7 @@ services:
             HYDRA_ADMIN_URL: http://hydra:4445
             OIDC_CLIENT_ID: front-poc-client
             OIDC_CLIENT_SECRET: front-poc-secret-please-replace
-            OIDC_REDIRECT_URI: http://localhost:3000/api/auth/callback/hydra
+            OIDC_REDIRECT_URI: http://localhost:3000/api/auth/oauth2/callback/hydra
             OIDC_POST_LOGOUT_REDIRECT_URI: http://localhost:3000/
             OIDC_SCOPE: "openid offline_access profile email"
         entrypoint:
@@ -92,6 +92,7 @@ services:
         build:
             context: ./front
             dockerfile: Dockerfile
+        user: "${UID:-1000}:${GID:-1000}"
         depends_on:
             hydra-setup:
                 condition: service_completed_successfully
@@ -99,13 +100,20 @@ services:
             - "3000:3000"
         environment:
             NODE_ENV: development
+            APP_URL: http://localhost:3000
             HYDRA_PUBLIC_URL: http://hydra:4444
             HYDRA_ADMIN_URL: http://hydra:4445
+            HYDRA_SERVER_URL: http://hydra:4444
             OIDC_ISSUER_URL: http://localhost:4444
             OIDC_CLIENT_ID: front-poc-client
             OIDC_CLIENT_SECRET: front-poc-secret-please-replace
-            OIDC_REDIRECT_URI: http://localhost:3000/api/auth/callback/hydra
+            OIDC_REDIRECT_URI: http://localhost:3000/api/auth/oauth2/callback/hydra
             OIDC_SCOPE: "openid offline_access profile email"
+            BETTER_AUTH_SECRET: dev-only-better-auth-secret-please-replace
+            BETTER_AUTH_URL: http://localhost:3000
+            BETTER_AUTH_DB_PATH: /var/lib/better-auth/db.sqlite
+        volumes:
+            - ./data/better-auth:/var/lib/better-auth
         develop:
             watch:
                 - action: sync

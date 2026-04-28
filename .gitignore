@@ -1,3 +1,5 @@
-# SQLite data — keep the directory tracked but ignore Hydra's generated files
+# SQLite data — keep the directory tracked but ignore generated files
 /data/hydra/*
 !/data/hydra/.gitkeep
+/data/better-auth/*
+!/data/better-auth/.gitkeep
