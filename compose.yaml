@@ -106,6 +106,9 @@ services:
             OIDC_CLIENT_SECRET: front-poc-secret-please-replace
             OIDC_REDIRECT_URI: http://localhost:3000/api/auth/callback/hydra
             OIDC_SCOPE: "openid offline_access profile email"
+            BETTER_AUTH_DB_PATH: /var/lib/better-auth/db.sqlite
+        volumes:
+            - ./data/better-auth:/var/lib/better-auth
         develop:
             watch:
                 - action: sync

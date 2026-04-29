@@ -16,4 +16,8 @@ export const env = {
 		"http://localhost:3000/api/auth/callback/hydra",
 	),
 	oidcScope: withDefault("OIDC_SCOPE", "openid offline_access profile email"),
+	betterAuthDbPath: withDefault(
+		"BETTER_AUTH_DB_PATH",
+		"./data/better-auth/db.sqlite",
+	),
 } as const;
