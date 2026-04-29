@@ -5,7 +5,7 @@ import { genericOAuth } from "better-auth/plugins";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 
-// pnpm dlx auth@latest generate --config ./src/lib/auth/auth.ts --output ./src/lib/db/schema.ts --yes
+// pnpm dlx auth@latest generate --config ./src/features/auth/rp/auth.ts --output ./src/features/auth/rp/schema.ts --yes
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: "sqlite",
