@@ -1,14 +1,16 @@
 import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { genericOAuth } from "better-auth/plugins";
-import Database from "better-sqlite3";
+import { db } from "@/lib/db";
+import * as schema from "@/lib/db/schema";
 import { env } from "@/lib/env";
 
-const db = new Database(env.betterAuthDbPath);
-db.pragma("journal_mode = WAL");
-
 export const auth = betterAuth({
-	database: db,
+	database: drizzleAdapter(db, {
+		provider: "sqlite",
+		schema,
+	}),
 	baseURL: env.betterAuthUrl,
 	secret: env.betterAuthSecret,
 	plugins: [
