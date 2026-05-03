@@ -1,4 +1,5 @@
-import { LoginForm } from "./LoginForm";
+import { LoginFormView } from "@/features/auth/views/LoginFormView";
+import { login } from "./actions";
 
 export default async function LoginPage({
 	searchParams,
@@ -9,13 +10,14 @@ export default async function LoginPage({
 	if (!login_challenge) {
 		if (process.env.NODE_ENV !== "production") {
 			return (
-				<>
-					<p className="text-xs text-foreground">(preview mode)</p>
-					<LoginForm loginChallenge="preview-only" />
-				</>
+				<LoginFormView
+					loginChallenge="preview-only"
+					action={login}
+					notice={<p className="text-xs text-foreground/70">(preview mode)</p>}
+				/>
 			);
 		}
 		return <p>Missing login_challenge.</p>;
 	}
-	return <LoginForm loginChallenge={login_challenge} />;
+	return <LoginFormView loginChallenge={login_challenge} action={login} />;
 }
