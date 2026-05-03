@@ -1,45 +1,51 @@
 "use client";
 
-import { Button } from "@/components/Button";
+import { useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { HomeView } from "./_components/HomeView";
 
 export default function Home() {
+	const searchParams = useSearchParams();
 	const { data: session, isPending } = authClient.useSession();
 
+	const previewSignedIn =
+		process.env.NODE_ENV !== "production" &&
+		searchParams.get("preview") === "signedin";
+
+	if (previewSignedIn) {
+		return (
+			<HomeView
+				state="signed-in"
+				userName="preview-user"
+				signOutDisabled
+				notice={<p className="text-xs text-foreground/50">(preview mode)</p>}
+			/>
+		);
+	}
+
 	if (isPending) {
-		return null;
+		return <HomeView state="loading" />;
+	}
+
+	if (!session) {
+		return (
+			<HomeView
+				state="signed-out"
+				onSignIn={() =>
+					authClient.signIn.oauth2({
+						providerId: "first",
+						callbackURL: "/",
+					})
+				}
+			/>
+		);
 	}
 
 	return (
-		<main className="flex flex-1 items-center justify-center px-6 py-12">
-			<div className="flex w-full max-w-sm flex-col items-center gap-6 rounded-2xl border border-foreground/10 bg-foreground/2 p-8 shadow-sm">
-				<p>Next.js + BetterAuth + OIDC example</p>
-				{!session ? (
-					<Button
-						variant="primary"
-						onPress={() =>
-							authClient.signIn.oauth2({
-								providerId: "first",
-								callbackURL: "/",
-							})
-						}
-					>
-						Sign in
-					</Button>
-				) : (
-					<>
-						<p className="text-center text-sm text-foreground/70">
-							Signed in as{" "}
-							<span className="font-medium text-foreground">
-								{session.user.name}
-							</span>
-						</p>
-						<Button variant="outline" onPress={() => authClient.signOut()}>
-							Sign out
-						</Button>
-					</>
-				)}
-			</div>
-		</main>
+		<HomeView
+			state="signed-in"
+			userName={session.user.name}
+			onSignOut={() => authClient.signOut()}
+		/>
 	);
 }

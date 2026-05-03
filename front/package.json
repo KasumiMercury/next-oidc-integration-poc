@@ -10,7 +10,9 @@
 		"format": "biome format --write",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
-		"db:push": "drizzle-kit push"
+		"db:push": "drizzle-kit push",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build"
 	},
 	"dependencies": {
 		"@better-auth/drizzle-adapter": "^1.6.9",
@@ -34,7 +36,19 @@
 		"drizzle-kit": "^0.31.10",
 		"tailwindcss": "^4.2.4",
 		"tsx": "^4.21.0",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"storybook": "^10.3.6",
+		"@storybook/nextjs-vite": "^10.3.6",
+		"@chromatic-com/storybook": "^5.1.2",
+		"@storybook/addon-vitest": "^10.3.6",
+		"@storybook/addon-a11y": "^10.3.6",
+		"@storybook/addon-docs": "^10.3.6",
+		"@storybook/addon-onboarding": "^10.3.6",
+		"vite": "^8.0.10",
+		"vitest": "^4.1.5",
+		"playwright": "^1.59.1",
+		"@vitest/browser-playwright": "^4.1.5",
+		"@vitest/coverage-v8": "^4.1.5"
 	},
 	"engines": {
 		"npm": "⚠use pnpm",
