@@ -24,7 +24,7 @@ Run from the repo root.
 | Purpose | Command |
 | --- | --- |
 | First start / rebuild images | `docker compose up --build` |
-| Develop with file sync + auto-rebuild on dep changes | `docker compose watch` |
+| Develop with file sync + auto-rebuild on dep changes | `docker compose up --watch` |
 | Stop and remove containers | `docker compose down` |
 | Reset Hydra's database | `docker compose down && rm -f data/hydra/db.sqlite && docker compose up --build` |
 | Inspect Hydra DB on the host | `sqlite3 data/hydra/db.sqlite` |
@@ -54,6 +54,8 @@ Configured under `services.front.develop.watch` in `compose.yaml`:
 - `rebuild` on `front/package.json` and `front/pnpm-lock.yaml` — dependency changes trigger an image rebuild so `pnpm install` re-runs.
 
 Since `node_modules` is *not* synced, dependencies live in the image layer; never bind-mount `front/` wholesale over `/app` or you'll mask the installed `node_modules`.
+
+Use `docker compose up --watch`, not `docker compose watch`. Bare `watch` starts services detached and only emits sync/rebuild events, so after `Watch enabled` no service logs appear and it looks like startup hung — Next.js's `Ready in …` and per-request log lines are simply not attached. `up --watch` attaches to all service stdouts and enables the same watcher.
 
 ## Hydra dev-mode caveats
 
