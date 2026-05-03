@@ -1,4 +1,4 @@
-import { login } from "./actions";
+import { LoginForm } from "./LoginForm";
 
 export default async function LoginPage({
 	searchParams,
@@ -9,10 +9,5 @@ export default async function LoginPage({
 	if (!login_challenge) {
 		return <p>Missing login_challenge.</p>;
 	}
-	return (
-		<form action={login}>
-			<input type="hidden" name="login_challenge" value={login_challenge} />
-			<button type="submit">Continue as test</button>
-		</form>
-	);
+	return <LoginForm loginChallenge={login_challenge} />;
 }
