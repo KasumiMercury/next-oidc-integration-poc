@@ -2,6 +2,7 @@ import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { genericOAuth } from "better-auth/plugins";
+import * as schema from "@/features/auth/rp/schema";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 
@@ -9,6 +10,7 @@ import { env } from "@/lib/env";
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: "sqlite",
+		schema,
 	}),
 	baseURL: env.betterAuthUrl,
 	secret: env.betterAuthSecret,
@@ -25,6 +27,13 @@ export const auth = betterAuth({
 					issuer: env.oidcIssuerUrl,
 					scopes: env.oidcScope.split(" "),
 					pkce: true,
+					mapProfileToUser: (profile) => ({
+						email: profile.email ?? `${profile.sub}@local.invalid`,
+						emailVerified: profile.email_verified ?? false,
+						name:
+							profile.name ?? profile.preferred_username ?? profile.sub ?? "",
+						image: profile.picture,
+					}),
 				},
 			],
 		}),

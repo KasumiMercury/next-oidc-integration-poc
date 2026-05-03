@@ -13,7 +13,7 @@ export const env = {
 	),
 	oidcRedirectUri: withDefault(
 		"OIDC_REDIRECT_URI",
-		"http://localhost:3000/api/auth/callback/hydra",
+		"http://localhost:3000/api/auth/oauth2/callback/first",
 	),
 	oidcScope: withDefault("OIDC_SCOPE", "openid offline_access profile email"),
 	betterAuthUrl: withDefault("BETTER_AUTH_URL", "http://localhost:3000"),
