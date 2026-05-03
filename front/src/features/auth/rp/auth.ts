@@ -27,6 +27,13 @@ export const auth = betterAuth({
 					issuer: env.oidcIssuerUrl,
 					scopes: env.oidcScope.split(" "),
 					pkce: true,
+					mapProfileToUser: (profile) => ({
+						email: profile.email ?? `${profile.sub}@local.invalid`,
+						emailVerified: profile.email_verified ?? false,
+						name:
+							profile.name ?? profile.preferred_username ?? profile.sub ?? "",
+						image: profile.picture,
+					}),
 				},
 			],
 		}),
