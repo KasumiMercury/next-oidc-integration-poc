@@ -9,7 +9,34 @@ import { useState } from "react";
 // Label      : <label> 要素（TextField と自動で紐づく）
 // FieldError : バリデーションエラーの表示欄
 import { FieldError, Input, Label, TextField } from "react-aria-components";
+// valibot: スキーマベースのバリデーションライブラリ
+import * as v from "valibot";
 import { Button } from "@/components/Button";
+
+// ユーザー名のバリデーションスキーマ
+// pipe: 複数のルールを順番に適用する
+// string: 文字列であること
+// minLength(1, ...): 1文字以上であること
+const usernameSchema = v.pipe(
+	v.string(),
+	v.minLength(1, "ユーザー名を入力してください。"),
+);
+
+// パスワードのバリデーションスキーマ
+const passwordSchema = v.pipe(
+	v.string(),
+	v.minLength(1, "パスワードを入力してください。"),
+);
+
+// スキーマを受け取り、React Aria の validate 関数を返すヘルパー
+// safeParse: エラーを throw せず { success, issues } の形で結果を返す
+function createValidator<T>(schema: v.BaseSchema<T, T, v.BaseIssue<T>>) {
+	return (value: string): string | null => {
+		const result = v.safeParse(schema, value);
+		// バリデーション成功なら null（エラーなし）、失敗なら最初のエラーメッセージを返す
+		return result.success ? null : (result.issues[0].message ?? null);
+	};
+}
 
 export type LoginFormViewProps = {
 	// Hydra から発行されるログインセッションの識別子
@@ -50,8 +77,8 @@ export function LoginFormView({
 						validationBehavior="aria"
 						value={username}
 						onChange={setUsername}
-						// 空のとき "Username is required." を返す → FieldError に表示される
-						validate={(v) => (v.length === 0 ? "ユーザー名を入力してください。" : null)}
+						// valibot のスキーマで生成したバリデーション関数を渡す
+						validate={createValidator(usernameSchema)}
 						className="flex flex-col gap-1.5"
 					>
 						<Label className="text-sm font-medium text-foreground">
@@ -72,7 +99,7 @@ export function LoginFormView({
 						validationBehavior="aria"
 						value={password}
 						onChange={setPassword}
-						validate={(v) => (v.length === 0 ? "パスワードを入力してください。" : null)}
+						validate={createValidator(passwordSchema)}
 						className="flex flex-col gap-1.5"
 					>
 						<Label className="text-sm font-medium text-foreground">
