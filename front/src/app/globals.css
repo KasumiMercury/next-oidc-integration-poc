@@ -1,25 +1,30 @@
 @import "tailwindcss";
 
+/* 灯篭：和紙クリーム × 深琥珀 × 炎アンバー */
+
 :root {
-	--background: #ffffff;
-	--foreground: #171717;
-	--destructive: #dc2626;
+	--background: #fdf6e8;
+	--foreground: #1c1108;
+	--muted: #f0e3c8;
+	--muted-foreground: #7a6040;
+	--border: #d4aa78;
+	--primary: #c07a38;
+	--primary-foreground: #fdf6e8;
+	--primary-glow: rgba(192, 122, 56, 0.4);
+	--destructive: #a83224;
 }
 
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-border: var(--border);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
 	--color-destructive: var(--destructive);
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-		--destructive: #f87171;
-	}
 }
 
 body {
