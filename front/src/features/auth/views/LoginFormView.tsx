@@ -49,7 +49,7 @@ export function LoginFormView({
 			</div>
 
 			{/* フォームカード */}
-			<div className="w-full max-w-sm rounded-xl border border-border bg-background p-8 shadow-md">
+			<div className="w-full max-w-sm rounded-xl border border-border bg-background p-8 shadow-[0_4px_24px_rgba(100,70,40,0.12)]">
 				{notice}
 				<form action={action} className="flex flex-col gap-4">
 					<input type="hidden" name="login_challenge" value={loginChallenge} />
