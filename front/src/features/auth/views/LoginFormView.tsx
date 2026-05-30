@@ -41,7 +41,7 @@ export function LoginFormView({
 	return (
 		<main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
 			{/* アイコン・タイトル（カードの外） */}
-			<div className="mb-8 flex flex-col items-center gap-2">
+			<div className="animate-fade-up mb-8 flex flex-col items-center gap-2">
 				<h1 className="text-2xl font-bold text-foreground">ログイン</h1>
 				<p className="text-sm text-muted-foreground">
 					アカウントにサインインしてください
@@ -49,7 +49,7 @@ export function LoginFormView({
 			</div>
 
 			{/* フォームカード */}
-			<div className="w-full max-w-sm rounded-xl border border-border bg-background p-8 shadow-[0_4px_24px_rgba(100,70,40,0.12)]">
+			<div className="animate-fade-up-delay w-full max-w-sm rounded-xl border border-border bg-background p-8 shadow-[0_4px_24px_rgba(100,70,40,0.12)]">
 				{notice}
 				<form action={action} className="flex flex-col gap-4">
 					<input type="hidden" name="login_challenge" value={loginChallenge} />
@@ -67,7 +67,7 @@ export function LoginFormView({
 							ユーザー名
 						</Label>
 						<Input
-							className="rounded-lg border border-border bg-muted px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground data-[focus-visible]:border-primary data-[focus-visible]:bg-background data-[focus-visible]:outline-none data-[invalid]:border-destructive"
+							className="rounded-lg border border-border bg-muted px-3.5 py-2.5 text-sm text-foreground transition-shadow placeholder:text-muted-foreground data-[focus-visible]:border-primary data-[focus-visible]:bg-background data-[focus-visible]:shadow-[0_0_0_3px_rgba(188,74,54,0.18)] data-[focus-visible]:outline-none data-[invalid]:border-destructive"
 							placeholder="username"
 						/>
 						<FieldError className="text-xs text-destructive" />
@@ -87,7 +87,7 @@ export function LoginFormView({
 							パスワード
 						</Label>
 						<Input
-							className="rounded-lg border border-border bg-muted px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground data-[focus-visible]:border-primary data-[focus-visible]:bg-background data-[focus-visible]:outline-none data-[invalid]:border-destructive"
+							className="rounded-lg border border-border bg-muted px-3.5 py-2.5 text-sm text-foreground transition-shadow placeholder:text-muted-foreground data-[focus-visible]:border-primary data-[focus-visible]:bg-background data-[focus-visible]:shadow-[0_0_0_3px_rgba(188,74,54,0.18)] data-[focus-visible]:outline-none data-[invalid]:border-destructive"
 							placeholder="••••••••"
 						/>
 						<FieldError className="text-xs text-destructive" />

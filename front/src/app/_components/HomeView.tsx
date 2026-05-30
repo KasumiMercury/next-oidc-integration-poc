@@ -26,7 +26,7 @@ export function HomeView({
 
 	return (
 		<main className="flex flex-1 items-center justify-center px-4 py-16">
-			<div className="w-full max-w-sm rounded-xl border border-border bg-background p-8 shadow-[0_4px_24px_rgba(100,70,40,0.12)]">
+			<div className="animate-fade-up w-full max-w-sm rounded-xl border border-border bg-background p-8 shadow-[0_4px_24px_rgba(100,70,40,0.12)]">
 				{notice}
 
 				{state === "signed-out" ? (
